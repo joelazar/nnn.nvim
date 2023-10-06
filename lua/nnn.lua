@@ -180,6 +180,10 @@ local function find_tabwin(id, mode)
   end
 end
 
+local function feedkeys(keys)
+  a.nvim_feedkeys(a.nvim_replace_termcodes(keys, true, true, true), "n", true)
+end
+
 -- on_exit callback for termopen
 local function on_exit(id, code)
   local mode = "explorer"
@@ -227,16 +231,13 @@ local function on_exit(id, code)
   -- restore last known active window
   if targetwin then
     a.nvim_set_current_win(targetwin.win)
+    feedkeys("<esc>")
   end
 end
 
 -- on_stdout callback for error catching
 local function on_stdout(_, data, _)
   stdout = data
-end
-
-local function feedkeys(keys)
-  a.nvim_feedkeys(a.nvim_replace_termcodes(keys, true, true, true), "n", true)
 end
 
 local function buffer_setup()
